@@ -1,0 +1,14 @@
+{
+  "name": "husqvarna_discord",
+  "version": "1.0.0",
+  "description": "A discord bot that will help you control your Husqvarna automower !",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Louis Ar",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.8.0"
+  }
+}
