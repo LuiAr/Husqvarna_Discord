@@ -2,10 +2,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-// Discord TOKEN
-// const {DISCORD_TOKEN} = require('./config.json');
-// const {DISCORD_TOKEN} = process.env.DISCORD_TOKEN;
-
+//TODO TOKENS TOKENS TOKENS TOKENS
+//? ------------------------------
 //? Discord TOKEN
 let DISCORD_TOKEN;
 
@@ -15,6 +13,9 @@ if (process.env.DISCORD_TOKEN) {
   	const config = require('./config.json');
   	DISCORD_TOKEN = config.DISCORD_TOKEN;
 }
+//? ------------------------------
+//TODO TOKENS TOKENS TOKENS TOKENS
+
 
 const { Client, Collection, GatewayIntentBits , Events , 
         EmbedBuilder , PermissionsBitField , Permissions, 
