@@ -6,6 +6,8 @@ const https = require('https');
 //? Weather TOKEN
 let WEATHER_TOKEN;
 
+// Test avec codespace
+
 if (process.env.DISCORD_TOKEN) {
     WEATHER_TOKEN = process.env.WEATHER_TOKEN;
 } else {
