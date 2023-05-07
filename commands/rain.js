@@ -63,7 +63,9 @@ module.exports = {
                     try {
                       const cityWeatherData = JSON.parse(cityData);
                       const cityName = cityWeatherData.name;
-                      interaction.reply(`It will rain in ${cityName} in the next 24 hours.`);
+                      const newMessage = `☔️ It will rain in ${cityName} in the next 48 hours.\n\n> ${next24Hours.map(hour => `**${new Date(hour.dt * 1000).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}** - ${hour.weather[0].description}`).join('\n')}`;
+                      // interaction.reply(`It will rain in ${cityName} in the next 24 hours.`);
+                      interaction.reply(newMessage);
                     } catch (error) {
                       console.error(error);
                       interaction.reply('Failed to fetch weather data. Please try again later.');

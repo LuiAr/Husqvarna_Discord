@@ -73,7 +73,7 @@ module.exports = {
               const willRain = next48Hours.some(hour => hour.weather[0].main === 'Rain');
       
               if (willRain) {
-                const newMessage = `☔️ It will rain in ${city} in the next 48 hours.`;
+                const newMessage = `☔️ It will rain in ${city} in the next 48 hours.\n\n> ${next48Hours.map(hour => `**${new Date(hour.dt * 1000).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}** - ${hour.weather[0].description}`).join('\n')}`;
                 // console.log(newMessage)
 
                 //? Send a message to the channel to notify the user <@176945428955267073> and then delete it after 5 seconds
