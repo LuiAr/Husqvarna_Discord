@@ -47,6 +47,7 @@ module.exports = {
     //! ------------------------------
     //! Send info of Raining in Troo each minutes
     //! ------------------------------
+    channel.send("Updating weather...");
     cron.schedule('*/30 * * * *', () => {
       const city = 'Troo';
       const lat = 47.777709;
@@ -55,7 +56,6 @@ module.exports = {
       const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily&units=metric&appid=${apiKey}&cnt=48`; // 48 hours forecast
       
       const channel = client.channels.cache.get('1101154133714669671');
-      channel.send("Updating weather...");
       
       https.get(url, (response) => {
         let data = '';
@@ -74,17 +74,6 @@ module.exports = {
       
               if (willRain) {
                 const newMessage = `☔️ It will rain in ${city} in the next 48 hours.\n\n> ${next48Hours.map(hour => `**${new Date(hour.dt * 1000).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}** - ${hour.weather[0].description}`).join('\n')}`;
-                // console.log(newMessage)
-
-                //? Send a message to the channel to notify the user <@176945428955267073> and then delete it after 5 seconds
-                channel.messages.fetch({ limit: 1 }).then(messages => {
-                  const lastMessage = messages.first();
-                  if (!lastMessage.content.toLowerCase().includes('rain')) {
-                    channel.send(`<@176945428955267073> It will rain in ${city} in the next 48 hours.`).then(msg => {
-                      msg.delete({ timeout: 5000 })
-                    })
-                  }
-                });
       
                 //? Update the last message in the channel with the new forecast information
                 channel.messages.fetch({ limit: 1 }).then(messages => {
