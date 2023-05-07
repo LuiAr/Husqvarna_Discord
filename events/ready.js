@@ -47,6 +47,7 @@ module.exports = {
     //! ------------------------------
     //! Send info of Raining in Troo each minutes
     //! ------------------------------
+    const channel = client.channels.cache.get('1101154133714669671');
     channel.send("Updating weather...");
     cron.schedule('*/30 * * * *', () => {
       const city = 'Troo';
