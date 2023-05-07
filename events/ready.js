@@ -35,7 +35,7 @@ module.exports = {
 
     //? Send the first message with updated status
     const lastRow = await getData();
-    sendUpdatedStatus(channelStatus, lastRow);
+    channelStatus.send(`__UPDATED STATUS__: \n\n-> Current status of : **${lastRow[1]}** --> __***${lastRow[2]}***__\n\n> \`${lastRow[3]}\` \n> Last update : \`${lastRow[0]}\``);
 
     //? Schedule task to run every 10 minutes
     cron.schedule('*/5 * * * *', async () => {
@@ -55,6 +55,7 @@ module.exports = {
       const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily&units=metric&appid=${apiKey}&cnt=48`; // 48 hours forecast
       
       const channel = client.channels.cache.get('1101154133714669671');
+      channel.send("Updating weather...");
       
       https.get(url, (response) => {
         let data = '';
