@@ -2,6 +2,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+// For event happing at a specific time
+const { cron } = require('node-cron');
+
+
 //TODO TOKENS TOKENS TOKENS TOKENS
 //? ------------------------------
 //? Discord TOKEN
@@ -24,6 +28,8 @@ const { Client, Collection, GatewayIntentBits , Events ,
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds , GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 const prefix = '!';
+
+
 
 // For events
 const eventsPath = path.join(__dirname, 'events');
@@ -70,5 +76,18 @@ client.on("messageCreate" , (message) => {
     const cmd = messageArray[0];
     
 })
+
+
+//TODO -------------
+//TODO ---- EVENTS
+// Using cron to schedule events, create an event that occurs at a specific time (e.g. 12:00 PM every day)
+
+
+//TODO -------------
+//TODO -------------
+
+
+
+
 
 client.login(DISCORD_TOKEN);
