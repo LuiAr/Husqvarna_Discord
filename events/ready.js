@@ -4,11 +4,14 @@ const { google } = require('googleapis');
 const https = require('https');
 
 
+// In northflank there is the file "/G_credentials.json" that is stored in the secret files. Use it
 //? Auth object for google API
 const auth = new google.auth.GoogleAuth({
-  keyFile: './G_credentials.json',
+  keyFile: '/G_credentials.json',
   scopes: 'https://www.googleapis.com/auth/spreadsheets',
 });
+
+
 
 //? Weather TOKEN
 let WEATHER_TOKEN;
@@ -35,6 +38,11 @@ module.exports = {
 
     //? Send the first message with updated status
     const lastRow = await getData();
+
+    //? remove all messages from channel
+    channelStatus.bulkDelete(100);
+
+    //? send new message
     channelStatus.send(`__UPDATED STATUS__: \n\n-> Current status of : **${lastRow[1]}** --> __***${lastRow[2]}***__\n\n> \`${lastRow[3]}\` \n> Last update : \`${lastRow[0]}\``);
 
     //? Schedule task to run every 10 minutes
@@ -48,6 +56,11 @@ module.exports = {
     //! Send info of Raining in Troo each minutes
     //! ------------------------------
     const channel = client.channels.cache.get('1101154133714669671');
+
+    //? remove all messages from channel
+    channel.bulkDelete(100);
+
+    //? send new message
     channel.send("Updating weather...");
     cron.schedule('*/30 * * * *', () => {
       const city = 'Troo';
@@ -70,7 +83,7 @@ module.exports = {
             const weatherData = JSON.parse(data);
       
             if (weatherData.hourly) {
-              const next48Hours = weatherData.hourly.slice(0, 48);
+              const next48Hours = weatherData.hourly.slice(0, 24); //* CHANGED TO 24 HOURS
               const willRain = next48Hours.some(hour => hour.weather[0].main === 'Rain');
       
               if (willRain) {
