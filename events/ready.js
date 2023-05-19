@@ -6,10 +6,25 @@ const https = require('https');
 
 // In northflank there is the file "/G_credentials.json" that is stored in the secret files. Use it
 //? Auth object for google API
-const auth = new google.auth.GoogleAuth({
-  keyFile: '/G_credentials.json',
-  scopes: 'https://www.googleapis.com/auth/spreadsheets',
-});
+let auth;
+
+if (process.env.GOOGLE_CREDENTIALS) {
+  // Running on Northflank, use the environment variable
+  auth = new google.auth.GoogleAuth({
+    keyFile: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+    scopes: 'https://www.googleapis.com/auth/spreadsheets',
+  });
+  console.log("Running Google API on Northflank")
+} else {
+  // Running locally, use the JSON file
+  const keyFilePath = './G_credentials.json';
+  auth = new google.auth.GoogleAuth({
+    keyFile: keyFilePath,
+    scopes: 'https://www.googleapis.com/auth/spreadsheets',
+  });
+  console.log("Running Google API locally")
+}
+
 
 
 
