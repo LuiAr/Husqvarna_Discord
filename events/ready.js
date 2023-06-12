@@ -103,7 +103,7 @@ module.exports = {
       
               if (willRain) {
                 const newMessage = `☔️ It will rain in ${city} in the next 48 hours.\n\n> ${next48Hours.map(hour => `**${new Date(hour.dt * 1000).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}** - ${hour.weather[0].description}`).join('\n')}`;
-      
+      		channel.send("WATCH <@176945428955267073>");
                 //? Update the last message in the channel with the new forecast information
                 channel.messages.fetch({ limit: 1 }).then(messages => {
                   const lastMessage = messages.first();
