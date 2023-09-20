@@ -78,16 +78,4 @@ client.on("messageCreate" , (message) => {
 })
 
 
-//TODO -------------
-//TODO ---- EVENTS
-// Using cron to schedule events, create an event that occurs at a specific time (e.g. 12:00 PM every day)
-
-
-//TODO -------------
-//TODO -------------
-
-
-
-
-
 client.login(DISCORD_TOKEN);
