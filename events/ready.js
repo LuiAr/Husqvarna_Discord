@@ -1,32 +1,6 @@
 const { Events } = require('discord.js');
 const cron = require('node-cron');
-const { google } = require('googleapis');
 const https = require('https');
-
-
-// In northflank there is the file "/G_credentials.json" that is stored in the secret files. Use it
-//? Auth object for google API
-let auth;
-
-if (process.env.GOOGLE_CREDENTIALS) {
-  // Running on Northflank, use the environment variable
-  auth = new google.auth.GoogleAuth({
-    keyFile: JSON.parse(process.env.GOOGLE_CREDENTIALS),
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-  console.log("Running Google API on Northflank")
-} else {
-  // Running locally, use the JSON file
-  const keyFilePath = './G_credentials.json';
-  auth = new google.auth.GoogleAuth({
-    keyFile: keyFilePath,
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-  console.log("Running Google API locally")
-}
-
-
-
 
 //? Weather TOKEN
 let WEATHER_TOKEN;
@@ -43,29 +17,6 @@ module.exports = {
   execute: async (client) => {
     //! Login message
     console.log(`Ready! Logged in as ${client.user.tag}`);
-
-
-    //! ------------------------------
-    //! Send status
-    //! ------------------------------
-    //? Get channel
-    const channelStatus = client.channels.cache.get('1100040777213681714');
-
-    //? Send the first message with updated status
-    const lastRow = await getData();
-
-    //? remove all messages from channel
-    channelStatus.bulkDelete(100);
-
-    //? send new message
-    channelStatus.send(`__UPDATED STATUS__: \n\n-> Current status of : **${lastRow[1]}** --> __***${lastRow[2]}***__\n\n> \`${lastRow[3]}\` \n> Last update : \`${lastRow[0]}\``);
-
-    //? Schedule task to run every 10 minutes
-    cron.schedule('*/5 * * * *', async () => {
-      // console.log("Updating status...")
-      const lastRow = await getData();
-      sendUpdatedStatus(channelStatus, lastRow);
-    });
 
     //! ------------------------------
     //! Send info of Raining in Troo each minutes
@@ -135,42 +86,5 @@ module.exports = {
     });
     
   },
-};
-
-const getData = async () => {
-  // Authenticate, get client and sheets
-  const client = await auth.getClient();
-  const sheets = google.sheets({ version: 'v4', auth: client });
-
-  // Sheet ID
-  const spreadsheetId = '1u0xYx6zCnpoIqI3lQxzSenlQK0YtFik6IVZ_s4oLULk';
-
-  // Get data from the sheet
-  try {
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range: `Feuille 1!A:D` // Replace with the name of your sheet or the range of cells you want to get
-    });
-
-    // Get the last row
-    const rows = response.data.values;
-    if (!rows || rows.length === 0) {
-      console.log('No data found.');
-      return;
-    }
-
-    // Return the last row
-    return rows[rows.length - 1];
-  } catch (err) {
-    console.log(`The API returned an error: ${err}`);
-  }
-};
-
-const sendUpdatedStatus = (channel, lastRow) => {
-  //? Update the last message in the channel with the new status
-  channel.messages.fetch({ limit: 1 }).then(messages => {
-    const lastMessage = messages.first();
-    lastMessage.edit(`__UPDATED STATUS__: \n\n-> Current status of : **${lastRow[1]}** --> __***${lastRow[2]}***__\n\n> \`${lastRow[3]}\` \n> Last update : \`${lastRow[0]}\``);
-  });
 };
 
