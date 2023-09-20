@@ -11,7 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.8.0",
-    "node-fetch": "^3.3.1"
+    "fs": "^0.0.1-security",
+    "googleapis": "^114.0.0",
+    "node-cron": "^3.0.2",
+    "node-fetch": "^3.3.1",
+    "node-tradfri-client": "^3.2.0",
+    "nodemon": "^2.0.22"
   },
   "devDependencies": {
     "g-sheets-api": "^2.1.3"
